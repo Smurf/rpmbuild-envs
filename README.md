@@ -1,7 +1,7 @@
 # rpmbuild-envs
 
 ## Modular RPM Build
-RPMs are great, building RPMs can suck. This rpmbuild directory is setup in a very particular manner to make building RPMs much better and Git friendly!
+RPMs are great, building RPMs can suck. Using some symlinks and rpmmacros much of this pain can be relieved.
 
 ## Installation
 1. Clone this repo to `~/rpmbuild`
