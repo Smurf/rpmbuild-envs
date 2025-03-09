@@ -1,0 +1,32 @@
+#!/bin/bash
+set -e
+TOPDIR_MACRO="%_topdir %{getenv:HOME}/rpmbuild/root"
+FILE="$HOME/.rpmmacros"
+
+if [ ! -f "$FILE" ];
+then
+    echo "$TOPDIR_MACRO" > $FILE
+    echo "Created $FILE and added %_topdir macro."
+    echo "Success!"
+    exit 0
+fi
+
+if grep -Fxq "$TOPDIR_MACRO" "$FILE";
+then
+    echo "The %_topdir macro is already correctly configured."
+    exit 0
+fi
+
+if grep -q "%_topdir .*" "$FILE";
+then
+    echo "Error: %_topdir macro already exists."
+    echo "Current configuration:"
+    grep "%_topdir .*" "$FILE"
+    echo "Please modify your %_topdir macro to be equivalent to the follwoing:"
+    echo "$TOPDIR_MACRO"
+    exit 0
+fi
+
+echo "$TOPDIR_MACRO" >> "$FILE"
+echo "Added %_topdir configuration to $FILE"
+exit 0

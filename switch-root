@@ -1,0 +1,29 @@
+#!/bin/bash
+function abspath {
+    if [[ -d "$1" ]]
+    then
+        pushd "$1" >/dev/null
+        pwd
+        popd >/dev/null
+    elif [[ -e $1 ]]
+    then
+        pushd "$(dirname "$1")" >/dev/null
+        echo "$(pwd)/$(basename "$1")"
+        popd >/dev/null
+    else
+        echo "$1" does not exist! >&2
+        return 127
+    fi
+}
+if [ -e "$HOME/rpmbuild/root" ]; then
+	rm -f "$HOME/rpmbuild/root"
+fi
+
+abs_buildroot="$(abspath $1)"
+
+if [ -d "$abs_buildroot" ]; then
+	ln -s "$abs_buildroot" "$HOME/rpmbuild/root"
+	echo "Your buildroot is now $abs_buildroot"
+else
+	echo "You must supply a directory to override %{buildroot}"
+fi
